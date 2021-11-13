@@ -2,7 +2,8 @@ import requests
 import os
 import json
 from kafka import KafkaProducer
-
+import traceback
+import urllib3
 # To set your enviornment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
 bearer_token = os.environ.get("TWITTER_BEARER_TOKEN")
@@ -123,6 +124,17 @@ def get_stream(set):
                 # print(response)
     except Exception as e:
         print (e)
+        print(traceback.format_exc())
+
+    except requests.exceptions.ChunkedEncodingError as e:
+        print (e)
+        print(traceback.format_exc())
+        main()
+        
+    except urllib3.exceptions.ProtocolError as e:
+        print (e)
+        print(traceback.format_exc())
+        main()
 
 def main():
         rules = get_rules()
